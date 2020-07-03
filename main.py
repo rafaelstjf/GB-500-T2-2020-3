@@ -2,7 +2,7 @@ import numpy as np  # multidimensional arrays
 import math
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans  # Kmeans algorithm from scikit-learning
-
+from sklearn import preprocessing
 def open_file():
     file_name = 'seeds_dataset.csv'
     header_name = 'seeds_dataset_header.csv'
@@ -29,8 +29,8 @@ def plot_result_data(data_file, result, x_axys, y_axys):
     plt.show()
 def standardisation(data_file):
     # scikit can do it using
-    # from sklearn import preprocessing
-    # preprocessing.scale(data_file[0])
+    # 
+    # 
     # but i've already done it so =)
     average = []
     for i in range(np.size(data_file[0], 1)):
@@ -84,7 +84,7 @@ def main():
     #plot_all_raw_data(raw_data)
     data = (raw_data[0][:, :7], raw_data[1][:7]) # the seeds dataset's last column is the class
     plot_raw_data(raw_data, 0, 4)
-    standard_data = standardisation(data)
+    standard_data = (preprocessing.scale(data[0]), data[1])
     result = run_kmeans(standard_data, 8)
     result+=1
     plot_result_data(data, result, 0, 1)
