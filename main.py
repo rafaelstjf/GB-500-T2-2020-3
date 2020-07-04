@@ -33,9 +33,9 @@ def standardisation(data_file):
     # 
     # but i've already done it so =)
     average = []
-    for i in range(np.size(data_file[0], 1)):
-        average.append(np.sum(data_file[0][:, i]))
-    for i in range(np.size(data_file[0], 1)):
+    for i in range(np.size(dat[0], 1)):
+        average.append(np.sum(dat[0][:, i]))
+    for i in range(np.size(dat[0], 1)):
         average[i] /= np.size(data_file[0], 0)
     standard_dev = []
     for i in range(np.size(data_file[0], 1)):
@@ -43,7 +43,7 @@ def standardisation(data_file):
         for j in range(np.size(data_file[0], 0)):
             sum+= ((data_file[0][j, i])-average[i])**2
         standard_dev.append(math.sqrt((sum/np.size(data_file[0], 0))))
-    fixed = data_file
+    fixed = np.copy(data_file, True)
     for i in range(np.size(data_file[0], 1)):
         for j in range(np.size(data_file[0], 0)):
             fixed[0][j, i] = (data_file[0][j, i]-average[i])/standard_dev[i]
