@@ -55,7 +55,7 @@ def run_kmeans(data_file, max_clusters=10):
     wcss = []
     centers = []
     min_clusters = 2
-    for i in range (min_clusters, max_clusters):
+    for i in range (min_clusters, max_clusters+1):
         k_means = KMeans(n_clusters=i)
         k_means.fit(data_file[0])  # Compute k-means clustering.
         wcss.append(k_means.inertia_)
@@ -65,17 +65,20 @@ def run_kmeans(data_file, max_clusters=10):
     results = np.array(results)
 
     #elbow-method to choose the best cluster number
-    x1, y1 = min_clusters, wcss[0]
-    x2, y2 = max_clusters, wcss[len(wcss)-1]
-    distances = []
-    for i in range(len(wcss)):
-        x0 = i+min_clusters
-        y0 = wcss[i]
-        numerator = abs((y2-y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)
-        denominator = math.sqrt((y2 - y1)**2 + (x2 - x1)**2)
-        distances.append(numerator/denominator)
-    optimal_index = distances.index(max(distances))
-    optimal_num =  optimal_index + min_clusters
+    optimal_index = 0
+    optimal_num = 1
+    if(len(wcss)>1):
+        x1, y1 = min_clusters, wcss[0]
+        x2, y2 = max_clusters, wcss[len(wcss)-1]
+        distances = []
+        for i in range(len(wcss)):
+            x0 = i+min_clusters
+            y0 = wcss[i]
+            numerator = abs((y2-y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)
+            denominator = math.sqrt((y2 - y1)**2 + (x2 - x1)**2)
+            distances.append(numerator/denominator)
+        optimal_index = distances.index(max(distances))
+        optimal_num =  optimal_index + min_clusters
     print("Optimal number of clusters: " + str(optimal_num))
     return results[optimal_index]
 
@@ -83,10 +86,18 @@ def main():
     raw_data = open_file()
     #plot_all_raw_data(raw_data)
     data = (raw_data[0][:, :7], raw_data[1][:7]) # the seeds dataset's last column is the class
-    plot_raw_data(raw_data, 0, 4)
+    max_clusters = int(input("Type the maximum number of clusters (min 2): "))
+    if(max_clusters < 2):
+        max_clusters = 2
     standard_data = (preprocessing.scale(data[0]), data[1])
-    result = run_kmeans(standard_data, 8)
+    result = run_kmeans(standard_data, max_clusters)
     result+=1
-    plot_result_data(data, result, 0, 1)
+    print("Dataset attributes:")
+    for i in range(np.size(data[1], 0)):
+        print(str(i) + " - " + str(data[1][i]))
+    x_axis = int(input("which attribute do you want to see in the x-axis of the charts? "))
+    y_axis = int(input("which attribute do you want to see in the y-axis of the charts? "))
+    plot_raw_data(raw_data, x_axis, y_axis)
+    plot_result_data(data, result, x_axis, y_axis)
     #print(result)
 main()
