@@ -3,9 +3,9 @@ import math
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans  # Kmeans algorithm from scikit-learning
 from sklearn import preprocessing
-def open_file():
-    file_name = 'seeds_dataset.csv'
-    header_name = 'seeds_dataset_header.csv'
+def open_file(data_file, header_file):
+    file_name = data_file
+    header_name = header_file
     deli = ','
     data_elements = np.genfromtxt(file_name, delimiter=deli)
     data_header = np.genfromtxt(header_name, delimiter=deli, dtype=str)
@@ -13,7 +13,7 @@ def open_file():
     return data_file
 
 def plot_raw_data(data_file, x_axys, y_axys):
-    chart = plt.scatter(x=data_file[0][:, x_axys], y=data_file[0][:, y_axys], c=data_file[0][:, 7])
+    chart = plt.scatter(x=data_file[0][:, x_axys], y=data_file[0][:, y_axys], c=data_file[0][:, -1])
     plt.xlabel(data_file[1][x_axys])
     plt.ylabel(data_file[1][y_axys])
     plt.title("Raw data")
@@ -83,9 +83,9 @@ def run_kmeans(data_file, max_clusters=10):
     return results[optimal_index]
 
 def main():
-    raw_data = open_file()
+    raw_data = open_file('iris.data', 'iris_header.txt')
     #plot_all_raw_data(raw_data)
-    data = (raw_data[0][:, :7], raw_data[1][:7]) # the seeds dataset's last column is the class
+    data = (raw_data[0][:, :3], raw_data[1][:3]) # the dataset's last column is the class
     max_clusters = int(input("Type the maximum number of clusters (min 2): "))
     if(max_clusters < 2):
         max_clusters = 2
