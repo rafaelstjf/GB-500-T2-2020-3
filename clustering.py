@@ -137,6 +137,16 @@ def run_kmeans_optimal(x, max_clusters=10):
         optimal_index = distances.index(max(distances))
         optimal_num =  optimal_index + min_clusters
     print("Optimal number of clusters: " + str(optimal_num))
+    cl = []
+    for i in range(min_clusters, (max_clusters+1)):
+        cl.append(i)
+    plt.plot(cl, wcss, color='#fddb3a')
+    plt.plot([cl[0],cl[len(cl)-1]], [wcss[0],wcss[len(wcss)-1]], color='#f6f4e6')
+    plt.plot(cl[optimal_index],wcss[optimal_index], color='#41444b', marker='x')
+    plt.title('Método do Cotovelo')
+    plt.ylabel('Distorção')
+    plt.xlabel('Número de agrupamentos')
+    plt.show()
     return results[optimal_index]
 
 def main():
@@ -151,15 +161,16 @@ def main():
         max_clusters = 2
     result = run_kmeans_optimal(x, max_clusters)
     '''
-    result = run_kmeans_optimal(x, 20)
+    result = run_kmeans_optimal(x, 10)
+    #result = run_kmeans(x, 3)
     print("Dataset attributes:")
     for i in range(np.size(data[1], 0) - 1):
         print(str(i) + " - " + str(headers[i]))
     x_axis = int(input("which attribute do you want to see in the x-axis of the charts? "))
     y_axis = int(input("which attribute do you want to see in the y-axis of the charts? "))
-    #plot_raw_data(x, labels,headers, x_axis, y_axis)
-    #plot_result_data(x, headers, result, x_axis, y_axis)
-    plot_by_cluster(x, labels, headers, result, x_axis, y_axis)
-    #count_result(result, labels)
+    plot_raw_data(x, labels,headers, x_axis, y_axis)
+    plot_result_data(x, headers, result, x_axis, y_axis)
+    #plot_by_cluster(x, labels, headers, result, x_axis, y_axis)
+    count_result(result, labels)
 
 main()
