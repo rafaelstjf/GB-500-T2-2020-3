@@ -16,8 +16,8 @@ def plot_raw_data(x_values, labels, headers, x_axys, y_axys):
     chart = plt.scatter(x=x_values[:, x_axys], y=x_values[:, y_axys], c=labels)
     plt.xlabel(headers[x_axys])
     plt.ylabel(headers[y_axys])
-    plt.title("True clusters")
-    plt.legend(*chart.legend_elements(), loc="upper right", title="Clusters")
+    plt.title("Agrupamentos originais")
+    plt.legend(*chart.legend_elements(), loc="lower right", title="Agrupamentos")
     plt.show()
 
 def count_result(result, labels):
@@ -87,7 +87,7 @@ def plot_by_cluster(x_values, labels, headers, result, x_axys, y_axys):
         chart = plt.scatter(x=x_values[:, x_axys], y=x_values[:, y_axys], c=colors)
         plt.xlabel(headers[x_axys])
         plt.ylabel(headers[y_axys])
-        plt.title("Element distribution on Cluster " + str(key))
+        plt.title("Distribuição dos elementos no agrupamento " + str(key))
         plt.xlabel(headers[x_axys])
         plt.ylabel(headers[y_axys])
         plt.legend(handles=handles)
@@ -99,7 +99,7 @@ def plot_result_data(x_values, headers, result, x_axys, y_axys):
     chart = plt.scatter(x=x_values[:, x_axys], y=x_values[:, y_axys], c=result)
     plt.xlabel(headers[x_axys])
     plt.ylabel(headers[y_axys])
-    plt.title("Clustering result")
+    plt.title("Resultado do K-means")
     plt.show()
 
 def run_kmeans(x, num_clusters):
@@ -170,7 +170,6 @@ def main():
     y_axis = int(input("which attribute do you want to see in the y-axis of the charts? "))
     plot_raw_data(x, labels,headers, x_axis, y_axis)
     plot_result_data(x, headers, result, x_axis, y_axis)
-    #plot_by_cluster(x, labels, headers, result, x_axis, y_axis)
+    plot_by_cluster(x, labels, headers, result, x_axis, y_axis)
     count_result(result, labels)
-
 main()

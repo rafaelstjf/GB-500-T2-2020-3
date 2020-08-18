@@ -1,1 +1,1 @@
-sepal length in cm,sepal width in cm,petal length in cm,petal width in cm,class
+Comprimento da sepala em cm, Largura da sepala em cm, Comprimento da petala em cm, Largura da petala em cm, Classe

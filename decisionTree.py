@@ -79,34 +79,55 @@ def cv_and_split_and_run_decisionTree(x, y, cv_value, names, class_names, train_
     print(confusion_matrix(y, result))
     return result, y
 
-def test_iris():
-    data, headers = open_file('iris.data', 'iris_header.txt')
-    x = data[:,:4]
-    y = data[:,4]
-    names=headers[:4]
-    class_names=['setosa', 'versicolour', 'virginica']
-    y_test = y
-    #result = run_decisionTree(x, y)
-    #result, y_test = split_and_run_decisionTree(x, y, 0.8)
-    result, y_test = cv_and_run_decisionTree(x, y, 10, names,class_names)
-    #build_matrix(y_test, result)
-
-def test_bcw():
-    data, headers = open_file('wdbc.data', 'breast-cancer-wisconsin_header.txt')
-    x = data [:,2:31]
-    y = data[:,1]
-    names=headers[2:31]
-    class_names = ['M', 'B']
-    #imp = SimpleImputer(missing_values=np.nan, strategy='mean')
-    #x = imp.fit_transform(x)
-    #caler = preprocessing.StandardScaler()
+def menu():
+    #iris
+    data_iris, headers_iris = open_file('iris.data', 'iris_header.txt')
+    x_iris = data_iris[:,:4]
+    y_iris = data_iris[:,4]
+    names_iris=headers_iris[:4]
+    class_names_iris=['setosa', 'versicolour', 'virginica']
+    #bcw
+    data_bcw, headers_bcw = open_file('wdbc.data', 'breast-cancer-wisconsin_header.txt')
+    x_bcw_old = data_bcw[:,2:31]
+    y_bcw = data_bcw[:,1]
+    names_bcw=headers_bcw[2:31]
+    class_names_bcw = ['M', 'B']
     scaler = preprocessing.MinMaxScaler()
-    standard_x = scaler.fit_transform(x)
-    #result, y_test = split_and_run_decisionTree(standard_x, y, 0.2)
-    #result, y_test = cv_and_run_decisionTree(standard_x, y, 10, names, class_names)
-    result, y_test = cv_and_split_and_run_decisionTree(standard_x, y, 10, names, class_names, 0.8)
-    
-    #y_test = y
-    #result = run_decisionTree(standard_x, y)
+    x_bcw = scaler.fit_transform(x_bcw_old)
+    run = True
+    while(run == True):
+        result = None
+        y_test = None
+        print('Options\n', 
+        '\t1 - Iris Training on whole dataset\n',
+        '\t2 - Iris Training on 80%\n',
+        '\t3 - Iris Training on 20%\n',
+        '\t4 - Iris 10-fold CV\n',
+        '\t5 - BCW Training on whole dataset\n',
+        '\t6 - BCW Training on 80%\n',
+        '\t7 - BCW Training on 20%\n',
+        '\t8 - BCW 10-fold CV\n',
+        '\t9 - Exit\n'
+        )
+        op = int(input('Type the option you want: '))
+        if(op == 1):
+            result = run_decisionTree(x_iris, y_iris)
+            y_test = y_iris
+        elif(op==2):
+            result, y_test = split_and_run_decisionTree(x_iris, y_iris, 0.8)
+        elif(op==3):
+            result, y_test = split_and_run_decisionTree(x_iris, y_iris, 0.2)
+        elif(op==4):
+                result, y_test = cv_and_run_decisionTree(x_iris, y_iris, 10, names_iris,class_names_iris)
+        elif(op==5):
+            result = run_decisionTree(x_bcw, y_bcw)
+        elif(op==6):
+            result, y_test = split_and_run_decisionTree(x_bcw, y_bcw, 0.8)
+        elif(op==7):
+            result, y_test = split_and_run_decisionTree(x_bcw, y_bcw, 0.2)
+        elif(op==8):
+            result, y_test = cv_and_run_decisionTree(x_bcw, y_bcw, 10, names_bcw, class_names_bcw)
+        elif(op==9):
+            run = False
 
-test_bcw()
+menu()
