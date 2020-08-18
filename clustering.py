@@ -154,22 +154,30 @@ def main():
     #plot_all_raw_data(raw_data)
     x = data[:, :4]
     labels = data[:,4]
-    standard_x = preprocessing.scale(x)
-    '''
-    max_clusters = int(input("Type the maximum number of clusters (min 2): "))
-    if(max_clusters < 2):
-        max_clusters = 2
-    result = run_kmeans_optimal(x, max_clusters)
-    '''
-    result = run_kmeans_optimal(x, 10)
-    #result = run_kmeans(x, 3)
-    print("Dataset attributes:")
-    for i in range(np.size(data[1], 0) - 1):
-        print(str(i) + " - " + str(headers[i]))
-    x_axis = int(input("which attribute do you want to see in the x-axis of the charts? "))
-    y_axis = int(input("which attribute do you want to see in the y-axis of the charts? "))
-    plot_raw_data(x, labels,headers, x_axis, y_axis)
-    plot_result_data(x, headers, result, x_axis, y_axis)
-    plot_by_cluster(x, labels, headers, result, x_axis, y_axis)
-    count_result(result, labels)
+    #standard_x = preprocessing.scale(x)
+    result = None
+    run = True
+    while(run == True):
+        print('Options\n', 
+        '\t1 - Run using 3 clusters\n',
+        '\t2 - Run using elbow method (from 2 to 10 clusters)\n',
+        '\t3 - Exit\n',
+        )
+        op = int(input('Type the option you want: '))
+        if(op == 1):
+            result = run_kmeans(x, 3)
+        elif(op==2):
+            result = run_kmeans_optimal(x, 10)
+        elif(op==3):
+            run = False
+            return
+        print("Dataset attributes:")
+        for i in range(np.size(data[1], 0) - 1):
+            print(str(i) + " - " + str(headers[i]))
+        x_axis = int(input("which attribute do you want to see in the x-axis of the charts? "))
+        y_axis = int(input("which attribute do you want to see in the y-axis of the charts? "))
+        plot_raw_data(x, labels,headers, x_axis, y_axis)
+        plot_result_data(x, headers, result, x_axis, y_axis)
+        plot_by_cluster(x, labels, headers, result, x_axis, y_axis)
+        count_result(result, labels)
 main()
