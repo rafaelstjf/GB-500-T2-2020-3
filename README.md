@@ -1,2 +1,2 @@
-# GB-500-T2-2020-3
- Segundo trabalho prático de AM
+# GB-500-TP-2020-3
+Trabalho prático de AM
